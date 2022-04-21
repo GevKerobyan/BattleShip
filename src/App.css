@@ -1,38 +1,175 @@
+
+body {
+  background-color: RGB(42, 107, 204);
+  background: url("./assets/background.jpg");
+  user-select: none;  
+}
 .App {
   text-align: center;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+header {
+  position: absolute;
+  top: 50px;
+  font-size: 24px;
+  font-weight: bold;
+  margin-left: auto;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.game-page-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  width: 1500px;
+  height: 500px;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.game-page-wrapper.drag4 {
+   cursor: url('./assets/shipDrag/4shipDrag.png'),  auto;
+} 
+
+.game-options-wrapper {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 470px;
+  width: 250px;
+}
+
+.game-options-wrapper h2 {
+  height: 50px;
+  border-bottom: 1px solid black;
+}
+
+.game-arena-wrapper {
+  height: 460px;
+  width: 1000px;
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.game-enemy-fleet {
+  height: 460px;
+  width: 250px;
+}
+
+.board {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  width: 420px;
+  height: 420px;
+  margin: 20px;
+}
+
+.coordinate-alphabet {
+  width: 100%;
+  height: 20px;
+  position: absolute;
+  display: flex;
+  top: -40px;
+  left: 0;
+}
+
+.top-letter {
+  width: 42px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.coordinate-digits {
+  height: 100%;
+  width: 20px;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  top: 0;
+  left: -30px;
+}
+
+.side-number {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 10%;
+}
+
+.square1 {
+  box-sizing: border-box;
+  width: 42px;
+  height: 42px;
+  border: 1px solid black;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.square1.clicked {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.square1:hover {
+  background-color: rgba(0, 0, 0, 0.4);
+  box-shadow:  3px 2px 7px rgba(0, 0, 0, 0.6);
+  }
+
+.square2 {
+  box-sizing: border-box;
+  width: 42px;
+  height: 42px;
+  border: 1px solid black;
+  background-color: rgba(0, 0, 0, 0.6);
+  cursor: url('./assets/cursor1.png'), auto;
+}
+
+.square2:hover {
+  background-color: rgba(0, 0, 0, 0.4);
+  box-shadow:  3px 2px 10px rgba(255,255, 255, 0.6);
+  
+  }
+
+
+
+.ship-selector {
+  height: 75px; 
+  margin: 20px 0;
+  width: 225px;
+  padding: 0 20px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.ship-selector span {
+  font-size: 20px;
+  font-weight: bold;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.ship-selector img {
+  transform: rotate(45deg);
+  height: 100%;
+  margin-right: 35px;
 }
+
+
+
+/* .myBoard {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.enemyBoard {
+  background-color: rgba(0, 0, 0, 0.6);
+
+} */
