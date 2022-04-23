@@ -4,7 +4,9 @@ import './SetUpPanelStyling.css'
 
 
 
-function SetUpPanel({rotateFlag, setRotateFlag, finishSetup}) {
+function SetUpPanel({
+  rotateFlag, setRotateFlag, finishSetup,
+  modalOpen, setModalOpen, player, setPlayer}) {
   
   return (
     <div className='setUpPanel'>

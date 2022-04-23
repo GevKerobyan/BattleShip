@@ -30,11 +30,12 @@ header {
   height: 500px;
   padding: 20px;
   box-sizing: border-box;
+  
 }
 
-.game-page-wrapper.drag4 {
+/* .game-page-wrapper.drag4 {
    cursor: url('./assets/shipDrag/4shipDrag.png'),  auto;
-} 
+}  */
 
 .game-options-wrapper {
   display: flex;

@@ -4,24 +4,18 @@ import { ACTIONS, myDefaultState, reducer, alph, nums } from '../../state/myStat
 function Square1({ element, putShips, shipSize }) {
   const [shipState, shipDispatch] = useReducer(reducer, myDefaultState)
 
-  // shipState.player1.map()
-
-  // function setClassname() {
-  //   return 
-  // }
-
   return (
-    <div
+    
+     <div 
       draggable={false}
-      className={`square1 ${(element.isDisabled ? "disabled" : "") ? "" :( element.partOf ? "partOf" : "")}`}
+      className={`square1 ${(element.isDisabled ? "disabled" : "") ? "" : (element.isOccupied ? "isOccupied" : "")}`}
       onClick={() => {
         if (!shipState[element.owner].isSet) {
-          console.log('element', element)
           putShips(element, shipSize)
         } else return
       }
       }
-    ></div>
+    ></div> 
   )
 }
 
