@@ -1,7 +1,7 @@
 import shipDrag4 from '../../assets/shipDrag/4shipDrag.png'
 
 
-function Cursor4(rotateFlag) {
+function Cursor4({rotateFlag, children}) {
   const dragCursorStyling4 = {
     transform: `translate(${rotateFlag ? '90deg' : '0'})`,
     position: 'absolute',

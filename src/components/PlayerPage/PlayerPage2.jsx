@@ -12,7 +12,7 @@ import Cursor3 from '../../elements/Cursor/Cursor3';
 import Cursor2 from '../../elements/Cursor/Cursor2';
 import Cursor1 from '../../elements/Cursor/Cursor1';
 
-function PlayerPage1({ 
+function PlayerPage2({ 
    newCursor,
    shipDrag,
    setNewCursor,
@@ -30,7 +30,7 @@ function PlayerPage1({
       y: '',
    })
    const [tempShips, setTempShips] = useState({
-      player: '1',
+      player: '2',
       complete: false,
       coords: {
          '4': [
@@ -61,7 +61,7 @@ function PlayerPage1({
    // ---------- CLICK ON SHIP IMAGE DIV ---------- \\
 
    const selectShipSize1 = (e) => {
-      if (!shipState?.player1.isSet) {
+      if (!shipState?.player2.isSet) {
          if (tempShips.coords['1'].length < 4) {
             setShipSize(1)
          } else alert("you already have enough of those ships, please erase one if needed")
@@ -69,7 +69,7 @@ function PlayerPage1({
    }
 
    const selectShipSize2 = (e) => {
-      if (!shipState.player1.isSet) {
+      if (!shipState.player2.isSet) {
          if (tempShips.coords['2'].length < 3) {
             setShipSize(2)
          } else alert("you already have enough of those ships, please erase one if needed")
@@ -77,7 +77,7 @@ function PlayerPage1({
    }
 
    const selectShipSize3 = (e) => {
-      if (!shipState.player1.isSet) {
+      if (!shipState.player2.isSet) {
          if (tempShips.coords['3'].length < 2) {
             setShipSize(3)
          } else alert("you already have enough of those ships, please erase one if needed")
@@ -85,7 +85,7 @@ function PlayerPage1({
    }
 
    const selectShipSize4 = (e) => {
-      if (!shipState.player1.isSet) {
+      if (!shipState.player2.isSet) {
          if (tempShips.coords['4'].length < 1) {
             setShipSize(4)
          } else alert("you already have enough of those ships, please erase one if needed")
@@ -94,6 +94,7 @@ function PlayerPage1({
 
    useEffect(() => {
       console.log('consoling: shipState in useEffect :::', shipState)
+      console.log('consoling: shipsFullCount :::', shipsFullCount )
    }, [shipState])
 
    // ---------- SET SHIPS ---------- \\
@@ -118,7 +119,7 @@ function PlayerPage1({
             for (let i = el.coordinates.y; i < el.coordinates.y + shipSize; i++) {
                newTempShipCoordNumb.push(i)
                newCoords = newTempShipCoordNumb.map((item) => {
-                  return 'p1' + newAlphCoord + item
+                  return 'p2' + newAlphCoord + item
                })
             }
 
@@ -154,7 +155,7 @@ function PlayerPage1({
                let coordIndexAlph = alph.indexOf(el.coordinates.x)
                let newTempShipCoordAlph = alph.slice(coordIndexAlph, coordIndexAlph + shipSize)
                newCoords = newTempShipCoordAlph.map((item) => {
-                  return 'p1' + item + el.coordinates.y
+                  return 'p2' + item + el.coordinates.y
                }) 
             } else {
                let newAlphCoord = el.coordinates.x
@@ -162,12 +163,12 @@ function PlayerPage1({
                for (let i = el.coordinates.y; i < el.coordinates.y + shipSize; i++) {
                   newTempShipCoordNumb.push(i)
                   newCoords = newTempShipCoordNumb.map((item) => {
-                     return 'p1' + newAlphCoord + item
+                     return 'p2' + newAlphCoord + item
                   })
                }  
             }
          }
-         shipState.player1.ownBoard.map((item) => {
+         shipState.player2.ownBoard.map((item) => {
             return item.map((el) => {
                if (newCoords.includes(el.id)) {
                   if (el.isDisabled || el.isOccupied) {
@@ -185,7 +186,7 @@ function PlayerPage1({
                setTempShips({
                   ...tempShips, coords: {
                      ...tempShips.coords, [myShipSize]: [...tempShips.coords[myShipSize], {
-                        shipId: 'player1-' + myShipSize + '-' + (tempShips.coords[myShipSize].length + 1),
+                        shipId: 'player2-' + myShipSize + '-' + (tempShips.coords[myShipSize].length + 1),
                         shipCoordinates: newCoords
                      }]
                   },
@@ -198,7 +199,7 @@ function PlayerPage1({
                setTempShips({
                   ...tempShips, coords: {
                      ...tempShips.coords, [myShipSize]: [...tempShipArr, {
-                        shipId: 'player1-' + myShipSize + '-' + (tempShips.coords[myShipSize].length + 1),
+                        shipId: 'player2-' + myShipSize + '-' + (tempShips.coords[myShipSize].length + 1),
                         shipCoordinates: newCoords
                      }
                      ]
@@ -221,6 +222,7 @@ function PlayerPage1({
          shipSize: shipSize,
          elX: tempCoords.x,
          elY: tempCoords.y,
+         playerNum:'2',
       })
    }, [tempShips])
 
@@ -239,11 +241,33 @@ function PlayerPage1({
 
 
    // FINISH SETUP \\
+   let shipsFullCount = 0;
+   // let shipsFull = false;
 
    const finishSetup = () => {
-      shipDispatch({type: ACTIONS.ENDSETTING, player: 'player2'})
-      setModalOpen(true)
-      setPlayer(1);
+
+      for(let keys in shipState.player2.ships.coords) {
+         console.log('consoling: shipState.player1.ships.coords :::', shipState.player2.ships.coords[keys] )
+  
+            if((5 - shipState.player2.ships.coords[keys].length) == keys) {
+               console.log('mtav');
+               shipsFullCount+=1
+               console.log('consoling: shipsFullCount ners :::', shipsFullCount )
+
+            }
+         // })
+      }
+      // if (shipsFullCount === 4) {
+      //    shipsFull = true;
+      // }
+
+      if(shipsFullCount === 4) {
+         shipDispatch({type: ACTIONS.ENDSETTING, player: 'player2'})
+         setModalOpen(true)
+         setPlayer(1);
+      }
+      
+      
    }
 
    return (
@@ -253,10 +277,9 @@ function PlayerPage1({
          <Cursor3 rotateFlag={rotateFlag} />
          <Cursor4 rotateFlag={rotateFlag} />
          <div className='game-options-wrapper'>
-            <h2>Player2</h2>
+            <h2>Player 2</h2>
             <div className='ship-selector' id='4' onClick={(e) => selectShipSize4(e)}>
                <img src={ship4} alt="" id='4' className='ship4img' onClick={(e) => startDraggingShip(e)} />
-               {/* onClick={() => console.log('img id 4')} */}
                <span id='4'>4 x</span><span id='4'>1</span>
             </div>
             <div className='ship-selector' id='3' onClick={(e) => selectShipSize3(e)}>
@@ -277,7 +300,7 @@ function PlayerPage1({
             <div className='game-board-own board'>
                <div className='coordinate-alphabet'>{topAlph}</div>
                <div className='coordinate-digits'>{sideNumber}</div>
-               {shipState?.player1.ownBoard.map((item) => {
+               {shipState?.player2.ownBoard.map((item) => {
                   return item.map((element) => {
                      return <Square1
                         key={element.id}
@@ -291,7 +314,7 @@ function PlayerPage1({
             <div className='game-board-opp board'>
                <div className='coordinate-alphabet'>{topAlph}</div>
                <div className='coordinate-digits'>{sideNumber}</div>
-               {shipState?.player2.ownBoard.map((item) => {
+               {shipState?.player1.ownBoard.map((item) => {
                   return item.map((element) => {
                      return <Square2
                         key={element.id}
@@ -301,11 +324,11 @@ function PlayerPage1({
                })}
             </div>
          </div>
-         {shipState?.player1.isSet ?
+         {shipState?.player2.isSet ?
             <div className='game-enemy-fleet'></div> :
             <SetUpPanel rotateFlag={rotateFlag} setRotateFlag={setRotateFlag} finishSetup={finishSetup} />
          }
       </div>)
 }
 
-export default PlayerPage1
+export default PlayerPage2

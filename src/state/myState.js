@@ -25,7 +25,6 @@ const myDefaultState = {
             })
          }),
       ships: {},
-      opponentBoard: [],
    },
    player2: {
       isSet: false,
@@ -47,11 +46,8 @@ const myDefaultState = {
             })
          }),
       ships: {},
-      opponentBoard: [/* player1.ownBoard */],
    }
 }
-myDefaultState.player1.opponentBoard = myDefaultState.player2.ownBoard;
-myDefaultState.player2.opponentBoard = myDefaultState.player1.ownBoard;
 
 const ACTIONS = {
    SETSHIP: 'SETSHIP',
@@ -91,26 +87,26 @@ function reducer(state, action) {
          })
 
          if (action.rotate) {
-            disabledArr = ['p1' + action.elX + (action.elY - 1), 'p1' + action.elX + (action.elY + (action.shipSize + 1)),];
+            disabledArr = [`p${action.playerNum}` + action.elX + (action.elY - 1), `p${action.playerNum}` + action.elX + (action.elY + (action.shipSize + 1)),];
             disableColumn = [alph[disableColumnIndex - 1], alph[disableColumnIndex + 1]];
             disableColumn.map((item) => {
                for (let i = action.elY - 1; i <= action.elY + action.shipSize; i++) {
-                  disabledArr.push('p1' + item + i)
+                  disabledArr.push(`p${action.playerNum}` + item + i)
                }
             })
             console.log('consoling: disabledArr :::', disabledArr)
 
          } else if (!action.rotate) {
-            disabledArr = [`p1`+(alph[(disableColumnIndex-1)]+action.elY), `p1`+(alph[disableColumnIndex+(action.shipSize)])+action.elY]
+            disabledArr = [`p${action.playerNum}`+(alph[(disableColumnIndex-1)]+action.elY), `p${action.playerNum}`+(alph[disableColumnIndex+(action.shipSize)])+action.elY]
             disableColumn = [action?.elY-1, action?.elY+1]
             disableColumn.map((item)=>{
                alph.slice((disableColumnIndex-1),disableColumnIndex+(action.shipSize+1)).map((element) => {
-                  disabledArr.push(`p1`+element+item)
+                  disabledArr.push(`p${action.playerNum}`+element+item)
                })
             })
             console.log('consoling: disabledArr :::', disabledArr )
          }
-
+         console.log('consoling: state :::', state )
          state.player1.ownBoard.map((item)=>{
             return item.map ((elem)=> {
                if(disabledArr.includes(elem.id)){
@@ -134,7 +130,22 @@ function reducer(state, action) {
             return {
                ...state,
                player1: { ...state.player1, ships: action.newShips, ownBoard: myBoard },
-               player2: { ...state.player2, opponentBoard: myBoard }
+            }
+         }
+         if (action.newShips.player === '2') {
+            let myBoard;
+            myBoard = state.player2.ownBoard.map((item) => {
+               return item.map((element) => {
+                  if (shipCordIdsResult.includes(element.id)) {
+                     return {
+                        ...element, isOccupied: true,
+                     }
+                  } return element
+               })
+            })
+            return {
+               ...state,
+               player2: { ...state.player2, ships: action.newShips, ownBoard: myBoard },
             }
          }
 
@@ -142,6 +153,7 @@ function reducer(state, action) {
 
       case ACTIONS.ENDSETTING: {
          if(action.player === 'player1'){
+            if (state.player1.ships)
             return {
                ...state,
                player1: { ...state.player1, isSet: true},
@@ -179,7 +191,7 @@ function reducer(state, action) {
    }
 }
 
-
+console.log('consoling: myDefaultState after reducer:::', myDefaultState )
 
 
 export { ACTIONS, reducer, myDefaultState, alph, nums };

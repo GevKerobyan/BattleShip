@@ -12,7 +12,7 @@ import Cursor3 from '../../elements/Cursor/Cursor3';
 import Cursor2 from '../../elements/Cursor/Cursor2';
 import Cursor1 from '../../elements/Cursor/Cursor1';
 
-function PlayerPage1({ 
+function PlayerPage1({
    newCursor,
    shipDrag,
    setNewCursor,
@@ -21,7 +21,7 @@ function PlayerPage1({
    setModalOpen,
    player,
    setPlayer
- }) {
+}) {
    const [shipState, shipDispatch] = useReducer(reducer, myDefaultState)
    const [shipSize, setShipSize] = useState('')
    const [rotateFlag, setRotateFlag] = useState(false)
@@ -94,6 +94,7 @@ function PlayerPage1({
 
    useEffect(() => {
       console.log('consoling: shipState in useEffect :::', shipState)
+      console.log('consoling: shipsFullCount :::', shipsFullCount)
    }, [shipState])
 
    // ---------- SET SHIPS ---------- \\
@@ -142,20 +143,20 @@ function PlayerPage1({
                allowedLength = false;
                tempRotate = true
                setRotateFlag(!rotateFlag)
-               console.log('consoling: rotateFlag inside :::', rotateFlag )
+               console.log('consoling: rotateFlag inside :::', rotateFlag)
                if ((el.coordinates.y + shipSize) > 10) {
                   allowedLength = false;
                   setRotateFlag(!rotateFlag);
                } else {
                   allowedLength = true;
                }
-            } 
+            }
             if (!tempRotate) {
                let coordIndexAlph = alph.indexOf(el.coordinates.x)
                let newTempShipCoordAlph = alph.slice(coordIndexAlph, coordIndexAlph + shipSize)
                newCoords = newTempShipCoordAlph.map((item) => {
                   return 'p1' + item + el.coordinates.y
-               }) 
+               })
             } else {
                let newAlphCoord = el.coordinates.x
                let newTempShipCoordNumb = [];
@@ -164,7 +165,7 @@ function PlayerPage1({
                   newCoords = newTempShipCoordNumb.map((item) => {
                      return 'p1' + newAlphCoord + item
                   })
-               }  
+               }
             }
          }
          shipState.player1.ownBoard.map((item) => {
@@ -213,7 +214,7 @@ function PlayerPage1({
 
    useEffect(() => {
       console.log('consoling: tempCoords :::', tempCoords)
-      console.log('consoling: rotateFlag useEffect :::', rotateFlag )
+      console.log('consoling: rotateFlag useEffect :::', rotateFlag)
       shipDispatch({
          type: ACTIONS.SETSHIP,
          newShips: tempShips,
@@ -221,6 +222,7 @@ function PlayerPage1({
          shipSize: shipSize,
          elX: tempCoords.x,
          elY: tempCoords.y,
+         playerNum: '2',
       })
    }, [tempShips])
 
@@ -240,24 +242,33 @@ function PlayerPage1({
 
    // FINISH SETUP \\
    let shipsFullCount = 0;
-   let shipsFull = false;
+   // let shipsFull = false;
 
    const finishSetup = () => {
-      // for(let keys in shipState.player1.ships) {
-      //    shipState.player1.ships[keys].coords.map((item)=>{
-      //       if((5-item.length) === keys) {
-      //          shipsFullCount++
-      //       }
-      //    })
-      // }
+
+      for (let keys in shipState.player1.ships.coords) {
+         console.log('consoling: shipState.player1.ships.coords :::', shipState.player1.ships.coords[keys])
+
+         if ((5 - shipState.player1.ships.coords[keys].length) == keys) {
+            console.log('mtav');
+            shipsFullCount += 1
+            console.log('consoling: shipsFullCount ners :::', shipsFullCount)
+
+         }
+         // })
+      }
       // if (shipsFullCount === 4) {
       //    shipsFull = true;
       // }
-      // if(shipsFull) {
-         shipDispatch({type: ACTIONS.ENDSETTING, player: 'player1'})
-      // }
-      setModalOpen(true)
-      setPlayer(2);
+
+      if (shipsFullCount === 4) {
+         shipDispatch({ type: ACTIONS.ENDSETTING, player: 'player1' })
+         setModalOpen(true)
+         setPlayer(2);
+
+      }
+
+
    }
 
    return (
@@ -267,10 +278,9 @@ function PlayerPage1({
          <Cursor3 rotateFlag={rotateFlag} />
          <Cursor4 rotateFlag={rotateFlag} />
          <div className='game-options-wrapper'>
-            <h2>Select Ship</h2>
+            <h2>Player 1</h2>
             <div className='ship-selector' id='4' onClick={(e) => selectShipSize4(e)}>
                <img src={ship4} alt="" id='4' className='ship4img' onClick={(e) => startDraggingShip(e)} />
-               {/* onClick={() => console.log('img id 4')} */}
                <span id='4'>4 x</span><span id='4'>1</span>
             </div>
             <div className='ship-selector' id='3' onClick={(e) => selectShipSize3(e)}>
